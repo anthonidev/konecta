@@ -1,6 +1,8 @@
 import { CreateUserService, DeleteUserService, UpdateUserService } from "@/context/slice/user/service";
+import { loadLocalUsers } from "@/context/slice/user/userSlice";
 import { useAppDispatch } from "@/context/store";
-import { LockClosedIcon, UserIcon } from "@heroicons/react/20/solid";
+import { onlyLetter, onlyNumber } from "@/utils/validations";
+import { LockClosedIcon } from "@heroicons/react/20/solid";
 import {
     Button,
     Input,
@@ -12,8 +14,6 @@ import {
 } from "@nextui-org/react";
 import { SubmitHandler } from "react-hook-form";
 import Form from "../common/Form";
-import { loadLocalUsers } from "@/context/slice/user/userSlice";
-import { onlyLetter, onlyNumber } from "@/utils/validations";
 
 type Props = {
     open: boolean;
@@ -111,9 +111,11 @@ const ModalUser = ({ open, onOpenChange, title, type, item }: Props) => {
                                                         onKeyDown={onlyNumber}
                                                         radius="none"
                                                         label="DNI"
+                                                        minLength={8}
+                                                        maxLength={8}
                                                         {...register("dni", {
                                                             required: true,
-                                                            maxLength: 30,
+                                                            maxLength: 8,
                                                         })}
                                                         type="text"
                                                     />

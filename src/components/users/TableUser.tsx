@@ -4,11 +4,12 @@ import { useAppDispatch, useAppSelector } from "@/context/store";
 import { columns } from "@/utils/tableFormat";
 import { Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import ModalUser from "./ModalUser";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import Loading from "../common/Loading";
+import ModalUser from "./ModalUser";
 
 export default function TableUser() {
-    const { users } = useAppSelector(state => state.user)
+    const { users, loading } = useAppSelector(state => state.user)
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [typeModal, setTypeModal] = useState<"edit" | "delete">("edit");
     const [userData, setUserData] = useState<User>();
@@ -33,7 +34,7 @@ export default function TableUser() {
                 return (
                     <div className="relative flex items-center gap-2">
                         <Button variant="light"
-                        color="primary"
+                            color="primary"
                             onPress={() => hadleModal("edit", user)}
                             size="sm"
                             endContent={<PencilSquareIcon className="h-5 w-5" />}
@@ -56,8 +57,6 @@ export default function TableUser() {
         }
     }, []);
 
-
-
     const bottomContent = useMemo(() => {
         return (
             <div className="flex flex-1 justify-between sm:justify-end space-x-3 my-3">
@@ -78,11 +77,18 @@ export default function TableUser() {
             <Table aria-label="Table"
                 isStriped
                 bottomContent={bottomContent}
+
             >
-                <TableHeader columns={columns}>
+                <TableHeader columns={columns}
+                >
                     {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
                 </TableHeader>
-                <TableBody items={users}
+                <TableBody
+                    loadingContent={
+                        <Loading />
+                    }
+                    isLoading={loading}
+                    items={users}
                     emptyContent={
                         <div className="flex flex-col items-center justify-center space-y-4">
                             <svg

@@ -1,10 +1,11 @@
 import { AppDispatch } from "@/context/store";
-import { addLocalUser, removeLocalUser, updateLocalUser } from "./userSlice";
+import { addLocalUser, removeLocalUser, setLoading, updateLocalUser } from "./userSlice";
 import { toast } from "react-toastify";
 
 const CreateUserService =
     (data: User) =>
         async (dispatch: AppDispatch) => {
+            dispatch(setLoading(true));
             const localUsers = localStorage.getItem("users");
             let response = false;
 
@@ -21,6 +22,7 @@ const CreateUserService =
                     response = true;
                 }
             }
+            dispatch(setLoading(false));
             return response;
 
         };
@@ -29,6 +31,8 @@ const CreateUserService =
 const UpdateUserService =
     (data: User, compare: User) =>
     async (dispatch: AppDispatch) => {
+        dispatch(setLoading(true));
+
             const localUsers = localStorage.getItem("users");
             let response = false;
             if (data.dni === compare.dni) {
@@ -50,12 +54,15 @@ const UpdateUserService =
                     }
                 }
             }
+            dispatch(setLoading(false));
             return response;
 
         };
 const DeleteUserService = (data: User) => (dispatch: AppDispatch) => {
+    setLoading(true);
     dispatch(removeLocalUser(data));
     toast.success("Usuario eliminado correctamente");
+    setLoading(false);
 }
 
 

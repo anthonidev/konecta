@@ -12,6 +12,7 @@ export const userSlice = createSlice({
             state.loading = action.payload;
         },
         loadLocalUsers(state) {
+            state.loading = true;
 
             const localUsers = localStorage.getItem('users');
             if (localUsers) {
@@ -19,6 +20,7 @@ export const userSlice = createSlice({
             }else {
                 localStorage.setItem('users', JSON.stringify([]));
             }
+            state.loading = false;
         },
         addLocalUser(state, action: PayloadAction<User>) {
             const localUsers = localStorage.getItem('users');
