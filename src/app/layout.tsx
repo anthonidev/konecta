@@ -28,7 +28,6 @@ export default function RootLayout({
               <Nav />
               {children}
             </main>
-
             <ProviderToast />
           </ProviderUI>
         </ProviderRedux>

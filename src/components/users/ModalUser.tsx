@@ -13,6 +13,7 @@ import {
 import { SubmitHandler } from "react-hook-form";
 import Form from "../common/Form";
 import { loadLocalUsers } from "@/context/slice/user/userSlice";
+import { onlyLetter, onlyNumber } from "@/utils/validations";
 
 type Props = {
     open: boolean;
@@ -26,21 +27,31 @@ const ModalUser = ({ open, onOpenChange, title, type, item }: Props) => {
     const dispatch = useAppDispatch();
     const onSubmit: SubmitHandler<User> = (data) => {
         if (type === "create") {
-            dispatch(CreateUserService(data))
+            dispatch(CreateUserService(data)).then((response) => {
+                if (response) {
+                    onOpenChange()
+                }
+
+            })
         }
         else if (type === "edit") {
-            item&& dispatch(UpdateUserService(data, item))
+            item && dispatch(UpdateUserService(data, item)).then((response) => {
+                if (response) {
+                    onOpenChange()
+                }
+
+            })
         }
         else {
-            item&& dispatch(DeleteUserService(item))
+            item && dispatch(DeleteUserService(item))
+            onOpenChange()
         }
         dispatch(loadLocalUsers())
-        onOpenChange()
     };
 
     return (
         <>
-            <Modal isOpen={open} onOpenChange={onOpenChange} isDismissable={false}>
+            <Modal isOpen={open} onOpenChange={onOpenChange} >
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -62,9 +73,9 @@ const ModalUser = ({ open, onOpenChange, title, type, item }: Props) => {
                                                         isRequired
                                                         type="text"
                                                         label="Nombres"
+                                                        onKeyDown={onlyLetter}
                                                         defaultValue={item?.first_name}
                                                         radius="none"
-                                                        endContent={<UserIcon className="h-5 w-5" />}
                                                         {...register("first_name", {
                                                             required: true,
                                                             maxLength: 30,
@@ -75,6 +86,8 @@ const ModalUser = ({ open, onOpenChange, title, type, item }: Props) => {
                                                         radius="none"
                                                         defaultValue={item?.last_name}
                                                         label="Apellidos"
+                                                        onKeyDown={onlyLetter}
+
                                                         {...register("last_name", {
                                                             required: true,
                                                             maxLength: 30,
@@ -95,6 +108,7 @@ const ModalUser = ({ open, onOpenChange, title, type, item }: Props) => {
                                                     <Input
                                                         isRequired
                                                         defaultValue={item?.dni}
+                                                        onKeyDown={onlyNumber}
                                                         radius="none"
                                                         label="DNI"
                                                         {...register("dni", {

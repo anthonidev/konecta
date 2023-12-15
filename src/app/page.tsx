@@ -3,9 +3,9 @@ import TableUser from "@/components/users/TableUser";
 
 export default function Home() {
   return (
-   <div className="flex flex-col space-y-5 mt-10">
-    <AddUser />
-    <TableUser />
-   </div>
+    <div className="flex flex-col space-y-5 mt-10 max-w-7xl mx-auto">
+      <AddUser />
+      <TableUser />
+    </div>
   )
 }

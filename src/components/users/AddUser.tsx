@@ -6,14 +6,14 @@ const AddUser = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     return (
         <div
-        className="flex justify-end"
+            className="flex justify-end"
         >
             <Button
                 variant="bordered"
+                color="success"
                 onPress={onOpen}
             >
                 Agregar Usuario
-
             </Button>
 
             <ModalUser
